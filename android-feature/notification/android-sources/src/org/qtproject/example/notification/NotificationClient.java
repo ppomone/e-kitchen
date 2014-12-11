@@ -619,6 +619,21 @@ public class NotificationClient extends
                haveRoot("pm install -r " + file_path);
        }
 
+       public static void install_apk(String absPath){
+                   String chmodCmd = "chmod 666 " + absPath;
+                   try {
+                             Runtime.getRuntime().exec(chmodCmd);
+                   } catch (Exception e) {
+                   }
+                  //__log("the abs Path is " + absPath);
+                  Intent intent = new Intent(Intent.ACTION_VIEW);
+                  intent.setDataAndType(Uri.fromFile(new File(absPath)),
+                                   "application/vnd.android.package-archive");
+                  m_instance.startActivity(intent);
+                  //return false;
+              }
+
+
         private static boolean haveRoot(String cmd) {
                 int i = execRootCmdSilent(cmd);
                 if (i != -1) {
