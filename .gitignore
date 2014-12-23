@@ -3,3 +3,4 @@
 *.user.*
 *.[o|obj]
 
+/android-feature/*.user
