@@ -349,8 +349,32 @@ public class NotificationClient extends
          *
          * } };
          */
-
         public static void set_screen_brightness_value(int value) {
+            int screenMode = -1;
+            try {
+                    screenMode = Settings.System.getInt(
+                                    m_instance.getContentResolver(),
+                                    Settings.System.SCREEN_BRIGHTNESS_MODE);
+            } catch (SettingNotFoundException e) {
+
+            }
+            if (screenMode == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC) {
+                    set_screen_brightness_mode(0);
+            }
+
+            try {
+                    Uri uri = android.provider.Settings.System
+                                    .getUriFor("screen_brightness");
+                    Settings.System.putInt(m_instance.getContentResolver(),
+                                    Settings.System.SCREEN_BRIGHTNESS, (int) value);
+                    m_instance.getContentResolver().notifyChange(uri, null);
+            } catch (Exception e) {
+
+                    Log.e("123", "exception", e);
+            }
+        }
+
+        /*public static void set_screen_brightness_value(int value) {
 
                 Looper looper1 = Looper.getMainLooper();
                 // Log.i(" ", "set_screen_brightness_value./....");
@@ -389,7 +413,7 @@ public class NotificationClient extends
                         }
                 }.start();
         }
-
+        */
         /**
          * 设置当前屏幕亮度值 0--255，并使之生效, 注意：该函数会强制将当前“亮度模式”设置为手动
          */
