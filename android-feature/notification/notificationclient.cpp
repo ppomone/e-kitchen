@@ -77,8 +77,8 @@ void NotificationClient::updateAndroidNotification()
     QString qstring;
     //QAndroidJniObject stringNumber =
     QAndroidJniObject::callStaticObjectMethod("org/qtproject/example/notification/NotificationClient",
-                                              "set_screen_brightness_value",
-                                              "(I)V", 150);
+                                              "wifi_scan",
+                                              "()Ljava/lang/String;", 150);
     //QString qstring = stringNumber.toString();
 
 

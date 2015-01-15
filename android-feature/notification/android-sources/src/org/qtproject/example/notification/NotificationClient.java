@@ -164,6 +164,30 @@ public class NotificationClient extends
         public static String wifi_scan() {
                 String ret = null;
 
+                if (!OpenWifi()) {
+                        try {
+
+                        } catch (Exception je) {
+                        }
+                        return ret;
+                }
+                // 开启wifi功能需要一段时间(我在手机上测试一般需要1-3秒左右)，所以要等到wifi
+                // 状态变成WIFI_STATE_ENABLED的时候才能执行下面的语句
+                while (m_wifi_manager.getWifiState() == WifiManager.WIFI_STATE_ENABLING) {
+                        try {
+                                // 为了避免程序一直while循环，让它睡个100毫秒在检测……
+                                Thread.currentThread();
+                                Thread.sleep(100);
+                        } catch (InterruptedException ie) {
+                        }
+                }
+                try {
+                        // 为了避免程序一直while循环，让它睡个100毫秒在检测……
+                        Thread.currentThread();
+                        Thread.sleep(1500);
+                } catch (InterruptedException ie) {
+                }
+
                 m_wifi_manager.startScan();
                 // 得到扫描结果
                 m_wifi_list = m_wifi_manager.getScanResults();
@@ -210,7 +234,11 @@ public class NotificationClient extends
                         ret = _wifi_scan.toString();
 
                         Log.i("", ret);
-                }
+                    } else {
+                        Log.i("", "列表为空");
+                        ret = null;
+                    }
+
                 return ret;
         }
 
