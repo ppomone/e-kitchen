@@ -1,4 +1,4 @@
-package org.qtproject.example.notification;
+package com.entwickeln.enmenu;
 
 import java.util.List;
 import android.util.Log;
@@ -41,7 +41,7 @@ public class WifiHandler {
             }
             // 开启wifi功能需要一段时间(我在手机上测试一般需要1-3秒左右)，所以要等到wifi
             // 状态变成WIFI_STATE_ENABLED的时候才能执行下面的语句
-            while (m_wifi_manager.getWifiState() == WifiManager.WIFI_STATE_ENABLING) {
+            while (m_wifi_manager.getWifiState() != WifiManager.WIFI_STATE_ENABLED) {
                     try {
                             // 为了避免程序一直while循环，让它睡个100毫秒在检测……
                             Thread.currentThread();
@@ -49,13 +49,13 @@ public class WifiHandler {
                     } catch (InterruptedException ie) {
                     }
             }
-            try {
+/*            try {
                     // 为了避免程序一直while循环，让它睡个100毫秒在检测……
                     Thread.currentThread();
                     Thread.sleep(1500);
             } catch (InterruptedException ie) {
             }
-
+*/
             m_wifi_manager.startScan();
             // 得到扫描结果
             m_wifi_list = m_wifi_manager.getScanResults();
@@ -189,6 +189,9 @@ public class WifiHandler {
             net_id = m_wifi_manager.addNetwork(_wifi_config);
             b_ret = m_wifi_manager.enableNetwork(net_id, true);
 
+            if (true == b_ret) {
+                b_ret = m_wifi_manager.saveConfiguration ();
+            }
             try {
                     connect_wifi.put("connect_wifi", b_ret);
             } catch (Exception je) {

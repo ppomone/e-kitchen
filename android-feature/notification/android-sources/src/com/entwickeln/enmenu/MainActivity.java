@@ -39,7 +39,7 @@
  **
  ****************************************************************************/
 
-package org.qtproject.example.notification;
+package com.entwickeln.enmenu;
 
 import java.util.List;
 import android.util.Log;
@@ -84,7 +84,7 @@ class MyHandler extends Handler {
         }
 }
 
-public class NotificationClient extends
+public class MainActivity extends
                 org.qtproject.qt5.android.bindings.QtActivity {
         private static NotificationManager m_notificationManager;
         private static Notification.Builder m_builder;
@@ -159,6 +159,7 @@ public class NotificationClient extends
         }
         // 提供一个外部接口，传入要连接的无线网
         public static String connect_wifi(String SSID, String Password, int Type) {
+            Log.i(" ", "connct wifi....\n");
                 return wifi_handler.connect_wifi(SSID, Password, Type);
         }
 
@@ -193,6 +194,8 @@ public class NotificationClient extends
                 //m_wifi_info = m_wifi_manager.getConnectionInfo();
 
 
+                wifi_handler = new WifiHandler(m_instance);
+                m_package_handler = new PackageHandler(m_instance);
                 looper = Looper.getMainLooper(); // 主线程的Looper对象
                 // m_handler = new MyHandler(looper);
                 // m_handler.removeMessages(0);

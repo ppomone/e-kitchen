@@ -1,5 +1,6 @@
 
-package org.qtproject.example.notification;
+package com.entwickeln.enmenu;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;

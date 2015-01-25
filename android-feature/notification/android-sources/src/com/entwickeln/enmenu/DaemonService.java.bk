@@ -1,4 +1,4 @@
-package org.qtproject.example.notification;
+package com.entwickeln.enmenu;
 
 import android.app.Service;
 import android.content.Intent;
