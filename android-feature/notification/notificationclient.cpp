@@ -70,29 +70,29 @@ void NotificationClient::updateAndroidNotification()
 {
     qDebug() << "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh\n";
     QAndroidJniObject javaNotification = QAndroidJniObject::fromString(m_notification);
-    QAndroidJniObject::callStaticMethod<void>("org/qtproject/example/notification/NotificationClient",
+    QAndroidJniObject::callStaticMethod<void>("com/entwickeln/enmenu/MainActivity",
                                               "notify",
                                               "(Ljava/lang/String;)V",
                                               javaNotification.object<jstring>());
     QString qstring;
     //QAndroidJniObject stringNumber =
-    QAndroidJniObject::callStaticObjectMethod("org/qtproject/example/notification/NotificationClient",
+    QAndroidJniObject::callStaticObjectMethod("com/entwickeln/enmenu/MainActivity",
                                               "wifi_scan",
                                               "()Ljava/lang/String;", 150);
     //QString qstring = stringNumber.toString();
 
 
 
-    //QAndroidJniObject javaSSID = QAndroidJniObject::fromString("TP-LINK_709A7C");
-    //QAndroidJniObject javaPassword = QAndroidJniObject::fromString("snprintf");
+    QAndroidJniObject javaSSID = QAndroidJniObject::fromString("207_too_strong");
+    QAndroidJniObject javaPassword = QAndroidJniObject::fromString("snprintf");
 
-    /* QAndroidJniObject stringNumber1 =
-            QAndroidJniObject::callStaticObjectMethod("org/qtproject/example/notification/NotificationClient",
-                                       "connect_wifi",
-                                       "(Ljava/lang/String;Ljava/lang/String;I)Ljava/lang/String;",
-                                                      javaSSID.object<jstring>(),
-                                                      javaPassword.object<jstring>(),
-                                                      0);*/
+   //  QAndroidJniObject stringNumber1 =
+     //       QAndroidJniObject::callStaticObjectMethod("com/entwickeln/enmenu/MainActivity",
+    //                                   "connect_wifi",
+    //                                   "(Ljava/lang/String;Ljava/lang/String;I)Ljava/lang/String;",
+     //                                                 javaSSID.object<jstring>(),
+     //                                                 javaPassword.object<jstring>(),
+     //                                                 2);
     //QString qstring1 = stringNumber1.toString();
 
     /*   QQuickItem * rootItem = ((QQuickView*)this->parent())->rootObject();

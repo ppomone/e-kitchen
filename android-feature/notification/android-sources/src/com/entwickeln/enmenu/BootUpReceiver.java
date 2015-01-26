@@ -1,3 +1,8 @@
+ /*
+  * Copyright (C) 2014-2015
+  * Contact: http://www.en-wickeln.com/legal
+  *
+  */
 
 package com.entwickeln.enmenu;
 
@@ -12,25 +17,27 @@ import android.os.SystemClock;
 
 public class BootUpReceiver extends BroadcastReceiver {
 
+    private static final String TAG = "EnmenuBootUpReceiver";
+
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-           Intent i = new Intent(context, NotificationClient.class);
+           Intent i = new Intent(context, MainActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
 
             // 启动完成
-                        Intent intent1 = new Intent(context, AlarmReceiver.class);
-                        intent1.setAction("arui.alarm.action");
-                        PendingIntent sender = PendingIntent.getBroadcast(context, 0,
-                                intent1, 0);
-                        long firstime = SystemClock.elapsedRealtime();
-                        AlarmManager am = (AlarmManager) context
-                                .getSystemService(Context.ALARM_SERVICE);
+                        //Intent intent1 = new Intent(context, AlarmReceiver.class);
+                        //intent1.setAction("arui.alarm.action");
+                        //PendingIntent sender = PendingIntent.getBroadcast(context, 0,
+                        //        intent1, 0);
+                        //long firstime = SystemClock.elapsedRealtime();
+                        //AlarmManager am = (AlarmManager) context
+                        //        .getSystemService(Context.ALARM_SERVICE);
 
                         // 10秒一个周期，不停的发送广播
-                        am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstime,
-                                10 * 1000, sender);
+                        //am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstime,
+                        //        10 * 1000, sender);
         }
     }
 

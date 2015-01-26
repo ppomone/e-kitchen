@@ -1,3 +1,9 @@
+ /*
+  * Copyright (C) 2014-2015
+  * Contact: http://www.en-wickeln.com/legal
+  *
+  */
+
 package com.entwickeln.enmenu;
 
 import android.util.Log;
@@ -11,8 +17,13 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+
 public class PackageHandler {
-    private Context m_ctx;
+
+    private static final String TAG = "EnmenuPackageHandler";
+
+
+    private static Context m_ctx;
 
     public PackageHandler(Context ctx){
         m_ctx = ctx;

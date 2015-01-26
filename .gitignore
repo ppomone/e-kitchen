@@ -4,3 +4,8 @@
 *.[o|obj]
 
 /android-feature/*.user
+build-androidextras-Android_for_armeabi_v7a_GCC_4_9_Qt_5_3_2-Release
+build-androidextras-Desktop-Debug
+build-androidextras-Android_for_armeabi_v7a_GCC_4_9_Qt_5_3_2-Debug
+/android-feature/androidextras.pro.user.*
+/android-feature/notification/notification.pro.user

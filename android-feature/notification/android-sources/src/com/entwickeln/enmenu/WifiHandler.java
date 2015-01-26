@@ -1,3 +1,9 @@
+ /*
+  * Copyright (C) 2014-2015
+  * Contact: http://www.en-wickeln.com/legal
+  *
+  */
+
 package com.entwickeln.enmenu;
 
 import java.util.List;
@@ -17,6 +23,7 @@ import android.net.wifi.WifiConfiguration.PairwiseCipher;
 import android.net.wifi.WifiConfiguration.Protocol;
 
 public class WifiHandler {
+    private static final String TAG = "EnmenuWifiHandler";
 
     private static WifiManager m_wifi_manager;
     private static WifiInfo m_wifi_info;
@@ -31,17 +38,21 @@ public class WifiHandler {
 
     public String wifi_scan() {
             String ret = null;
+            boolean is_ready_open = true;
 
-            if (!OpenWifi()) {
+            Log.i (TAG, "try to wifi_scan...\n");
+            if (!open_wifi()) {
                     try {
 
                     } catch (Exception je) {
                     }
+                        Log.i(TAG, "wifi switch can not open!\n");
                     return ret;
             }
             // 开启wifi功能需要一段时间(我在手机上测试一般需要1-3秒左右)，所以要等到wifi
             // 状态变成WIFI_STATE_ENABLED的时候才能执行下面的语句
-            while (m_wifi_manager.getWifiState() != WifiManager.WIFI_STATE_ENABLED) {
+            while (m_wifi_manager.getWifiState() == WifiManager.WIFI_STATE_ENABLING) {
+                is_ready_open = false;
                     try {
                             // 为了避免程序一直while循环，让它睡个100毫秒在检测……
                             Thread.currentThread();
@@ -49,13 +60,17 @@ public class WifiHandler {
                     } catch (InterruptedException ie) {
                     }
             }
-/*            try {
-                    // 为了避免程序一直while循环，让它睡个100毫秒在检测……
-                    Thread.currentThread();
-                    Thread.sleep(1500);
-            } catch (InterruptedException ie) {
+            if (is_ready_open == false){
+                is_ready_open = true;
+               try {
+                        // 为了避免程序一直while循环，让它睡个100毫秒在检测……
+                        Thread.currentThread();
+                        Thread.sleep(1000);
+                } catch (InterruptedException ie) {
+                }
+
             }
-*/
+
             m_wifi_manager.startScan();
             // 得到扫描结果
             m_wifi_list = m_wifi_manager.getScanResults();
@@ -101,9 +116,9 @@ public class WifiHandler {
                     }
                     ret = _wifi_scan.toString();
 
-                    Log.i("", ret);
+                    Log.i(TAG, ret);
                 } else {
-                    Log.i("", "列表为空");
+                    Log.i(TAG, "列表为空");
                     ret = null;
                 }
 
@@ -156,7 +171,7 @@ public class WifiHandler {
             WifiConfiguration _wifi_config = null;
             WifiConfiguration _temp_config = null;
 
-            if (!OpenWifi()) {
+            if (!open_wifi()) {
                     try {
                             connect_wifi.put("connect_wifi", b_ret);
                     } catch (Exception je) {
@@ -200,7 +215,7 @@ public class WifiHandler {
     }
 
     /*
-     * private boolean OpenWifi() { boolean bRet = true; if
+     * private boolean open_wifi() { boolean bRet = true; if
      * (!m_wifi_manager.isWifiEnabled()){ bRet =
      * m_wifi_manager.setWifiEnabled(true); } return bRet; }
      */
@@ -233,7 +248,7 @@ public class WifiHandler {
     }
 
     // 打开wifi功能
-    private static boolean OpenWifi() {
+    private static boolean open_wifi() {
             boolean bRet = true;
             if (!m_wifi_manager.isWifiEnabled()) {
                     bRet = m_wifi_manager.setWifiEnabled(true);
@@ -316,7 +331,7 @@ public class WifiHandler {
                     config.allowedPairwiseCiphers
                                     .set(WifiConfiguration.PairwiseCipher.CCMP);
                     config.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
-                    Log.i("", "llllllllllllllll\n");
+                    Log.i(TAG, "llllllllllllllll\n");
 
             } else {
                     return null;
