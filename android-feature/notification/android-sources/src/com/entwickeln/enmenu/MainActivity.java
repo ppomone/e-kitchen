@@ -107,32 +107,47 @@ public class MainActivity extends
         }
 
         public static String wifi_scan() {
-               return m_wifi_handler.wifi_scan();
+               return m_wifi_handler.wifiScan();
         }
 
         /**
          * 获取WIFI信息
          */
         public static String wifi_info() {
-               return m_wifi_handler.wifi_info();
+               return m_wifi_handler.getConnectionInfo();
         }
 
         /**
          * 获取WIFI状态
          */
         public static String wifi_state() {
-                return m_wifi_handler.wifi_state();
+                return m_wifi_handler.getWifiState();
         }
         // 提供一个外部接口，传入要连接的无线网
         public static String connect_wifi(String SSID, String Password, int Type) {
             Log.i(TAG, "connct wifi....\n");
-                return m_wifi_handler.connect_wifi(SSID, Password, Type);
+                return m_wifi_handler.connectWifi(SSID, Password, Type);
         }
 
+        public static void disconnect() {
+            m_wifi_handler.disconnect();
+        }
+
+        public static void remove_network(String SSID) {
+            m_wifi_handler.removeNetwork(SSID);
+        }
+
+        public static boolean set_wifi_enabled(boolean is_enabled){
+            return m_wifi_handler.setWifiEnabled(is_enabled);
+        }
 
         @Override
         public void onCreate(Bundle saveInstanceState) {
                 super.onCreate(saveInstanceState);
+
+                m_wifi_handler = new WifiHandler(m_instance);
+                m_package_handler = new PackageHandler(m_instance);
+                m_screen_handler = new ScreenHandler(m_instance);
 
                 registerReceiver(__battary_info_receviver, new IntentFilter(
                                 Intent.ACTION_BATTERY_CHANGED));
@@ -140,23 +155,13 @@ public class MainActivity extends
                 // fill screen
                 // requestWindowFeature(Window.FEATURE_NO_TITLE);
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                // WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-                m_wifi_handler = new WifiHandler(m_instance);
-                m_package_handler = new PackageHandler(m_instance);
-                m_screen_handler = new ScreenHandler(m_instance);
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
                 looper = Looper.getMainLooper(); // 主线程的Looper对象
                 // m_handler = new MyHandler(looper);
                 // m_handler.removeMessages(0);
                 _handler = new MyHandler(looper);
                 // _handler.removeMessages(0);
-
-                //Intent i = new Intent();
-                //i.setClass(context, DaemonService.class);
-                // 启动service
-                // 多次调用startService并不会启动多个service 而是会多次调用onStart
-                //context.startService(i);
         }
         @Override
         protected void onResume() {

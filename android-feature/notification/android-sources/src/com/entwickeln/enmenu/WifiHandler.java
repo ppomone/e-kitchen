@@ -36,12 +36,12 @@ public class WifiHandler {
         m_wifi_info = m_wifi_manager.getConnectionInfo();
     }
 
-    public String wifi_scan() {
+    public String wifiScan() {
             String ret = null;
             boolean is_ready_open = true;
 
             Log.i (TAG, "try to wifi_scan...\n");
-            if (!open_wifi()) {
+            if (!openWifi()) {
                     try {
 
                     } catch (Exception je) {
@@ -126,9 +126,9 @@ public class WifiHandler {
     }
 
     /**
-     * 获取WIFI信息
+     * 获取WIFI连接信息
      */
-    public String wifi_info() {
+    public String getConnectionInfo() {
             String ret = null;
             m_wifi_info = m_wifi_manager.getConnectionInfo();
 
@@ -149,7 +149,7 @@ public class WifiHandler {
     /**
      * 获取WIFI状态
      */
-    public String wifi_state() {
+    public String getWifiState() {
             String ret = null;
             JSONObject wifi_state = new JSONObject();
 
@@ -162,8 +162,28 @@ public class WifiHandler {
             return ret;
     }
 
+    public void removeNetwork(String SSID) {
+            //String ret = null;
+            WifiConfiguration _temp_config = null;
+            _temp_config = IsExsits(SSID);
+            if (_temp_config != null) {
+                    m_wifi_manager.removeNetwork(_temp_config.networkId);
+            }
+            //return ret;
+    }
+
+    public void disconnect() {
+            WifiInfo curWifi = m_wifi_manager.getConnectionInfo();
+            if (curWifi == null) {
+                    return;
+            }
+            int netId = curWifi.getNetworkId();
+            m_wifi_manager.disableNetwork(netId);
+            m_wifi_manager.disconnect();
+    }
+
     // 提供一个外部接口，传入要连接的无线网
-    public String connect_wifi(String SSID, String Password, int Type) {
+    public String connectWifi(String SSID, String Password, int Type) {
             String ret = null;
             int net_id = 0;
             boolean b_ret = false;
@@ -171,7 +191,7 @@ public class WifiHandler {
             WifiConfiguration _wifi_config = null;
             WifiConfiguration _temp_config = null;
 
-            if (!open_wifi()) {
+            if (!openWifi()) {
                     try {
                             connect_wifi.put("connect_wifi", b_ret);
                     } catch (Exception je) {
@@ -215,7 +235,7 @@ public class WifiHandler {
     }
 
     /*
-     * private boolean open_wifi() { boolean bRet = true; if
+     * private boolean openWifi() { boolean bRet = true; if
      * (!m_wifi_manager.isWifiEnabled()){ bRet =
      * m_wifi_manager.setWifiEnabled(true); } return bRet; }
      */
@@ -237,32 +257,36 @@ public class WifiHandler {
     // WIFICIPHER_WEP,WIFICIPHER_WPA, WIFICIPHER_NOPASS, WIFICIPHER_INVALID
     // }
 
-    private static void disconnect_wifi() {
-            WifiInfo curWifi = m_wifi_manager.getConnectionInfo();
-            if (curWifi == null) {
-                    return;
-            }
-            int netId = curWifi.getNetworkId();
-            m_wifi_manager.disableNetwork(netId);
-            m_wifi_manager.disconnect();
+
+    public boolean isWifiEnabled() {
+        return m_wifi_manager.isWifiEnabled();
     }
 
     // 打开wifi功能
-    private static boolean open_wifi() {
+    public boolean setWifiEnabled(boolean isEnabled) {
             boolean bRet = true;
-            if (!m_wifi_manager.isWifiEnabled()) {
-                    bRet = m_wifi_manager.setWifiEnabled(true);
-            }
+            bRet = m_wifi_manager.setWifiEnabled(isEnabled);
             return bRet;
     }
 
-    private static boolean close_wifi() {
+    // 用于在wifi关闭的情况下，打开wifi
+    private boolean openWifi(){
+        boolean bRet = true;
+        if (!m_wifi_manager.isWifiEnabled()){
+             bRet = m_wifi_manager.setWifiEnabled(true);
+        }
+        return bRet;
+    }
+
+
+    /*private static boolean close_wifi() {
             boolean bRet = true;
             if (!m_wifi_manager.isWifiEnabled()) {
                     bRet = m_wifi_manager.setWifiEnabled(false);
             }
             return bRet;
     }
+    */
 
     private static WifiConfiguration CreateWifiInfo(String SSID,
                     String Password, int Type) {
